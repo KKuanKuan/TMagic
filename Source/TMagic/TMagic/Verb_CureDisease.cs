@@ -11,9 +11,6 @@ namespace TorannMagic
 {
     public class Verb_CureDisease : Verb_UseAbility
     {
-        private int verVal;
-        private int pwrVal;
-            
         protected override bool TryCastShot()
         {
             Pawn caster = base.CasterPawn;
@@ -21,29 +18,20 @@ namespace TorannMagic
 
             MagicPowerSkill pwr = caster.GetComp<CompAbilityUserMagic>().MagicData.MagicPowerSkill_CureDisease.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_CureDisease_pwr");
             MagicPowerSkill ver = caster.GetComp<CompAbilityUserMagic>().MagicData.MagicPowerSkill_CureDisease.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_CureDisease_ver");
-            verVal = ver.level;
-            pwrVal = pwr.level;
-            if (caster.story.traits.HasTrait(TorannMagicDefOf.Faceless))
-            {
-                MightPowerSkill mpwr = caster.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_pwr");
-                MightPowerSkill mver = caster.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_ver");
-                pwrVal = mpwr.level;
-                verVal = mver.level;
-            }
             bool flag = pawn != null;
             if (flag)
             {
                 int num = 1;
                 int sevAdjustment = 0;
-                if (pwrVal == 3)
+                if (pwr.level == 3)
                 {
                     sevAdjustment = Mathf.RoundToInt(Rand.Range(1.5f, 3f));
                 }
-                else if (pwrVal == 2)
+                else if (pwr.level == 2)
                 {
                     sevAdjustment = Mathf.RoundToInt(Rand.Range(1.2f, 2.3f));
                 }
-                else if (pwrVal == 1)
+                else if (pwr.level == 1)
                 {
                     sevAdjustment = Mathf.RoundToInt(Rand.Range(1f, 1.6f));
                 }
@@ -67,17 +55,17 @@ namespace TorannMagic
                                     rec.Severity -= sevAdjustment;
                                     success = true;
                                 }
-                                if (verVal >= 1 && (rec.def.defName == "GutWorms" || rec.def.defName == "Malaria"))
+                                if (ver.level >= 1 && (rec.def.defName == "GutWorms" || rec.def.defName == "Malaria"))
                                 {
                                     rec.Severity -= sevAdjustment;
                                     success = true;
                                 }
-                                if (verVal >= 2 && (rec.def.defName == "SleepingSickness" || rec.def.defName == "MuscleParasites"))
+                                if (ver.level >= 2 && (rec.def.defName == "SleepingSickness" || rec.def.defName == "MuscleParasites"))
                                 {
                                     rec.Severity -= sevAdjustment;
                                     success = true;
                                 }
-                                if (verVal == 3)
+                                if (ver.level == 3)
                                 {
                                     rec.Severity -= sevAdjustment;
                                     success = true;

@@ -17,9 +17,6 @@ namespace TorannMagic
         MightPowerSkill ver;
         MightPowerSkill str;
 
-        private int verVal;
-        private int pwrVal;
-
         float weaponDPS = 0;
         float dmgMultiplier = 1;
         float pawnDPS = 0;
@@ -79,15 +76,7 @@ namespace TorannMagic
             pwr = comp.MightData.MightPowerSkill_PhaseStrike.FirstOrDefault((MightPowerSkill x) => x.label == "TM_PhaseStrike_pwr");
             ver = comp.MightData.MightPowerSkill_PhaseStrike.FirstOrDefault((MightPowerSkill x) => x.label == "TM_PhaseStrike_ver");
             str = comp.MightData.MightPowerSkill_global_strength.FirstOrDefault((MightPowerSkill x) => x.label == "TM_global_strength_pwr");
-            verVal = ver.level;
-            pwrVal = pwr.level;
-            if (base.CasterPawn.story.traits.HasTrait(TorannMagicDefOf.Faceless))
-            {
-                MightPowerSkill mver = comp.MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_ver");
-                MightPowerSkill mpwr = comp.MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_pwr");
-                verVal = mver.level;
-                pwrVal = mpwr.level;
-            }
+
             if (this.CasterPawn.equipment.Primary != null && !this.CasterPawn.equipment.Primary.def.IsRangedWeapon)
             {
                 dmgNum = GetWeaponDmg(this.CasterPawn);
@@ -126,9 +115,9 @@ namespace TorannMagic
                                 ThingSelectionUtility.SelectNextColonist();
                                 this.CasterPawn.DeSpawn();
                                 //p.SetPositionDirect(this.currentTarget.Cell);
-                                SearchForTargets(arg_29_0, (2f + (float)(.5f * verVal)), map, p);
+                                SearchForTargets(arg_29_0, (2f + (float)(.5f * ver.level)), map, p);
                                 GenSpawn.Spawn(p, this.currentTarget.Cell, map);
-                                DrawBlade(p.Position.ToVector3Shifted(), 4f + (float)(verVal));
+                                DrawBlade(p.Position.ToVector3Shifted(), 4f + (float)(ver.level));
                                 p.drafter.Drafted = true;                                
                                 ThingSelectionUtility.SelectPreviousColonist();
                             }
@@ -147,9 +136,9 @@ namespace TorannMagic
                         else
                         {
                             this.CasterPawn.DeSpawn();
-                            SearchForTargets(arg_29_0, (2f + (float)(.5f * verVal)), map, p);
+                            SearchForTargets(arg_29_0, (2f + (float)(.5f * ver.level)), map, p);
                             GenSpawn.Spawn(p, this.currentTarget.Cell, map);
-                            DrawBlade(p.Position.ToVector3Shifted(), 4f + (float)(verVal));
+                            DrawBlade(p.Position.ToVector3Shifted(), 4f + (float)(ver.level));
                         }
                     
                         //this.CasterPawn.SetPositionDirect(this.currentTarget.Cell);
@@ -194,7 +183,7 @@ namespace TorannMagic
 
                 if (victim != null && victim.Faction != pawn.Faction)
                 {
-                    if(Rand.Chance(.1f + .15f*pwrVal))
+                    if(Rand.Chance(.1f + .15f*pwr.level))
                     {
                         dmgNum *= 3;
                         MoteMaker.ThrowText(victim.DrawPos, victim.Map, "Critical Hit", -1f);

@@ -50,52 +50,6 @@ namespace TorannMagic
             GenSpawn.Spawn(moteThrown, loc.ToIntVec3(), map);
         }
 
-        public static void ThrowTextMote(Vector3 loc, Map map, string text, Color color, float solidTime, float timeBeforeStartFadeout = -1f)
-        {
-            if (!loc.ShouldSpawnMotesAt(map) || map.moteCounter.SaturatedLowPriority)
-            {
-                return;
-            }
-            MoteText moteText = (MoteText)ThingMaker.MakeThing(TorannMagicDefOf.Mote_1sText, null);
-            moteText.rotationRate = 0;
-            moteText.exactPosition = loc;
-            moteText.text = text;
-            moteText.textColor = color;
-            moteText.def.mote.solidTime = solidTime;
-            moteText.SetVelocity(0, 0);
-            GenSpawn.Spawn(moteText, loc.ToIntVec3(), map);
-        }
-
-        public static void ThrowDeceptionMaskMote(Vector3 loc, Map map, float scale, float solidTime)
-        {
-            if (!loc.ShouldSpawnMotesAt(map) || map.moteCounter.SaturatedLowPriority)
-            {
-                return;
-            }
-            MoteThrown moteThrown = (MoteThrown)ThingMaker.MakeThing(TorannMagicDefOf.Mote_DeceptionMask, null);
-            moteThrown.Scale = 1.9f * scale;
-            moteThrown.rotationRate = 0;
-            moteThrown.exactPosition = loc;
-            moteThrown.def.mote.solidTime = solidTime;
-            moteThrown.SetVelocity(0, 0);
-            GenSpawn.Spawn(moteThrown, loc.ToIntVec3(), map);
-        }
-
-        public static void ThrowPossessMote(Vector3 loc, Map map, float scale, float solidTime)
-        {
-            if (!loc.ShouldSpawnMotesAt(map) || map.moteCounter.SaturatedLowPriority)
-            {
-                return;
-            }
-            MoteThrown moteThrown = (MoteThrown)ThingMaker.MakeThing(TorannMagicDefOf.Mote_Possess, null);
-            moteThrown.Scale = 1.9f * scale;
-            moteThrown.rotationRate = 0;
-            moteThrown.exactPosition = loc;
-            moteThrown.def.mote.solidTime = solidTime;
-            moteThrown.SetVelocity(0, 0);
-            GenSpawn.Spawn(moteThrown, loc.ToIntVec3(), map);
-        }
-
         public static void ThrowExclamationMote(Vector3 loc, Map map, float scale)
         {
             if (!loc.ShouldSpawnMotesAt(map) || map.moteCounter.SaturatedLowPriority)
@@ -110,21 +64,6 @@ namespace TorannMagic
             GenSpawn.Spawn(moteThrown, loc.ToIntVec3(), map);
         }
 
-        public static void ThrowSparkFlashMote(Vector3 loc, Map map, float scale)
-        {
-            if (!loc.ShouldSpawnMotesAt(map) || map.moteCounter.Saturated)
-            {
-                return;
-            }
-            MoteThrown moteThrown = (MoteThrown)ThingMaker.MakeThing(TorannMagicDefOf.Mote_SparkFlash, null);
-            moteThrown.Scale = 1.9f * scale;
-            moteThrown.rotationRate = (float)Rand.Range(0, 30);
-            moteThrown.exactPosition = loc;
-            moteThrown.SetVelocity(0,0);
-            moteThrown.def.mote.fadeOutTime = .6f;
-            GenSpawn.Spawn(moteThrown, loc.ToIntVec3(), map);
-        }
-
         public static void ThrowEnchantingMote(Vector3 loc, Map map, float scale)
         {
             if (!loc.ShouldSpawnMotesAt(map) || map.moteCounter.SaturatedLowPriority)
@@ -136,20 +75,6 @@ namespace TorannMagic
             moteThrown.rotationRate = (float)Rand.Range(150, 200);
             moteThrown.exactPosition = loc;
             moteThrown.SetVelocity((float)Rand.Range(0, 360), Rand.Range(-0.35f, -0.75f));
-            GenSpawn.Spawn(moteThrown, loc.ToIntVec3(), map);
-        }
-
-        public static void ThrowCastingMote(Vector3 loc, Map map, float scale)
-        {
-            if (!loc.ShouldSpawnMotesAt(map) || map.moteCounter.SaturatedLowPriority)
-            {
-                return;
-            }
-            MoteThrown moteThrown = (MoteThrown)ThingMaker.MakeThing(TorannMagicDefOf.Mote_Casting, null);
-            moteThrown.Scale = 1.9f * scale;
-            moteThrown.rotationRate = (float)Rand.Range(150, 200);
-            moteThrown.exactPosition = loc;
-            moteThrown.SetVelocity((float)Rand.Range(0, 360), Rand.Range(0.35f, 0.75f));
             GenSpawn.Spawn(moteThrown, loc.ToIntVec3(), map);
         }
 

@@ -22,20 +22,7 @@ namespace TorannMagic
         {
             TM_MedicalRecipesUtility.SpawnNaturalPartIfClean(pawn, part, pos, map);
             TM_MedicalRecipesUtility.SpawnThingsFromHediffs(pawn, part, pos, map);
-            if (part.def.defName == "Rib")
-            {
-                for (int i = 0; i < part.parent.parts.Count; i++)
-                {
-                    if (part.parent.parts[i].def.defName == "Rib")
-                    {
-                        pawn.health.RestorePart(part.parent.parts[i], null, true);
-                    }
-                }
-            }
-            else
-            {
-                pawn.health.RestorePart(part, null, true);
-            }
+            pawn.health.RestorePart(part, null, true);
         }
 
         public static Thing SpawnNaturalPartIfClean(Pawn pawn, BodyPartRecord part, IntVec3 pos, Map map)

@@ -48,13 +48,6 @@ namespace TorannMagic
             ModOptions.SettingsRef settingsRef = new ModOptions.SettingsRef();
             pwrVal = pwr.level;
             verVal = ver.level;
-            if (pawn.story.traits.HasTrait(TorannMagicDefOf.Faceless))
-            {
-                MightPowerSkill mpwr = pawn.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_pwr");
-                MightPowerSkill mver = pawn.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_ver");
-                pwrVal = mpwr.level;
-                verVal = mver.level;
-            }
             this.arcaneDmg = comp.arcaneDmg;
             if (settingsRef.AIHardMode && !pawn.IsColonist)
             {
@@ -128,7 +121,7 @@ namespace TorannMagic
                             else
                             {
                                 //kills living
-                                damageEntities(victim, Mathf.RoundToInt(Rand.Range(2f + (1f * pwrVal), 4f + (1f * pwrVal)) * this.arcaneDmg), TMDamageDefOf.DamageDefOf.TM_Torment);
+                                damageEntities(victim, Mathf.RoundToInt(Rand.Range(.5f + (.5f * pwrVal), 3f + (.75f * pwrVal)) * this.arcaneDmg), TMDamageDefOf.DamageDefOf.TM_Torment);
                             }
                         }
                     }

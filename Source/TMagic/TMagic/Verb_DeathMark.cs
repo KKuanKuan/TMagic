@@ -10,8 +10,8 @@ namespace TorannMagic
     class Verb_DeathMark : Verb_UseAbility  
     {
 
-        private int verVal;
-        private int pwrVal;
+        MagicPowerSkill pwr;
+        MagicPowerSkill ver;
 
         bool validTarg;
 
@@ -39,23 +39,15 @@ namespace TorannMagic
         protected override bool TryCastShot()
         {
             bool result = false;
-            Pawn p = this.CasterPawn;
+
             CompAbilityUserMagic comp = this.CasterPawn.GetComp<CompAbilityUserMagic>();
-            MagicPowerSkill pwr = comp.MagicData.MagicPowerSkill_DeathMark.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_DeathMark_pwr");
-            MagicPowerSkill ver = comp.MagicData.MagicPowerSkill_DeathMark.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_DeathMark_ver");
-            verVal = ver.level;
-            pwrVal = pwr.level;
-            if (p.story.traits.HasTrait(TorannMagicDefOf.Faceless))
-            {
-                MightPowerSkill mpwr = p.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_pwr");
-                MightPowerSkill mver = p.GetComp<CompAbilityUserMight>().MightData.MightPowerSkill_Mimic.FirstOrDefault((MightPowerSkill x) => x.label == "TM_Mimic_ver");
-                pwrVal = mpwr.level;
-                verVal = mver.level;
-            }
+            pwr = comp.MagicData.MagicPowerSkill_DeathMark.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_DeathMark_pwr");
+            ver = comp.MagicData.MagicPowerSkill_DeathMark.FirstOrDefault((MagicPowerSkill x) => x.label == "TM_DeathMark_ver");
+                    
 
             if (this.currentTarget != null && base.CasterPawn != null)
             {
-                
+                Pawn p = this.CasterPawn;
                 Map map = this.CasterPawn.Map;
                 this.TargetsAoE.Clear();
                 this.UpdateTargets();
@@ -67,22 +59,22 @@ namespace TorannMagic
                         Pawn victim = this.TargetsAoE[i].Thing as Pawn;
                         if(!victim.RaceProps.IsMechanoid)
                         {
-                            HealthUtility.AdjustSeverity(victim, HediffDef.Named("TM_DeathMarkCurse"), Rand.Range(1f + pwrVal, 4 + 2 * pwrVal));
+                            HealthUtility.AdjustSeverity(victim, HediffDef.Named("TM_DeathMarkCurse"), Rand.Range(1f + pwr.level, 4 + 2 * pwr.level));
                             TM_MoteMaker.ThrowSiphonMote(victim.DrawPos, victim.Map, 1f);
                             if (comp.Pawn.health.hediffSet.HasHediff(HediffDef.Named("TM_LichHD"), false))
                             {
                                 comp.PowerModifier += 1;
                             }                            
 
-                            if (Rand.Chance(verVal * .2f))
+                            if (Rand.Chance(ver.level * .2f))
                             {
-                                if (Rand.Chance(verVal * .1f)) //terror
+                                if (Rand.Chance(ver.level * .1f)) //terror
                                 {
-                                    HealthUtility.AdjustSeverity(victim, HediffDef.Named("TM_Terror"), Rand.Range(3f * verVal, 5f * verVal));
+                                    HealthUtility.AdjustSeverity(victim, HediffDef.Named("TM_Terror"), Rand.Range(3f * ver.level, 5f * ver.level));
                                     TM_MoteMaker.ThrowDiseaseMote(victim.DrawPos, victim.Map, 1f, .5f, .2f, .4f);
                                     MoteMaker.ThrowText(victim.DrawPos, victim.Map, "Terror", -1);
                                 }
-                                if (Rand.Chance(verVal * .1f)) //berserk
+                                if (Rand.Chance(ver.level * .1f)) //berserk
                                 {
                                     if (victim.mindState != null && victim.RaceProps != null && victim.RaceProps.Humanlike)
                                     {

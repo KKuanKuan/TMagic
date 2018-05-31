@@ -176,7 +176,6 @@
 	  <Jade>20</Jade>
 	  <Silver>200</Silver>
 	  <RawMagicyte>400</RawMagicyte>
-	  <ThrumboHorn>2</ThrumboHorn>
     </costList>
 	<recipeMaker>
 	  <workSpeedStat>SmithingSpeed</workSpeedStat>
@@ -189,7 +188,7 @@
       </recipeUsers>
       <workAmount>60000</workAmount>
 	  <skillRequirements>
-			<Intellectual>4</Intellectual>
+			<Intellectual>6</Intellectual>
 			<Crafting>6</Crafting>
 	  </skillRequirements>
 	  <researchPrerequisite>

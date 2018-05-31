@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Verse;
 using Verse.AI;
 using AbilityUser;
-using UnityEngine;
 
 namespace TorannMagic
 {
@@ -12,7 +11,6 @@ namespace TorannMagic
     {
 
         private int duration;
-        Verb arg_45_0;
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
@@ -38,7 +36,6 @@ namespace TorannMagic
             {
                 targetPawn = TargetThingA as Pawn;
             }
-            
             if (targetPawn != null)
             {
                 //yield return Toils_Combat.CastVerb(TargetIndex.A, false);
@@ -51,46 +48,13 @@ namespace TorannMagic
                 //JobDriver curDriver = this.pawn.jobs.curDriver;
                 combatToil.initAction = delegate
                 {
-                    arg_45_0 = combatToil.actor.jobs.curJob.verbToUse;
-                    if (this.pawn.RaceProps.Humanlike)
-                    {
-                        if (this.pawn.story.traits.HasTrait(TorannMagicDefOf.Faceless))
-                        {
-                            CompAbilityUserMight mightComp = this.pawn.GetComp<CompAbilityUserMight>();
-                            CompAbilityUserMagic magicComp = this.pawn.GetComp<CompAbilityUserMagic>();
-                            if (mightComp.mimicAbility != null && mightComp.mimicAbility.MainVerb.verbClass == arg_45_0.verbProps.verbClass)
-                            {
-                                mightComp.RemovePawnAbility(mightComp.mimicAbility);
-                            }
-                            if (magicComp.mimicAbility != null && magicComp.mimicAbility.MainVerb.verbClass == arg_45_0.verbProps.verbClass)
-                            {
-                                magicComp.RemovePawnAbility(magicComp.mimicAbility);
-                            }
-                        }
-                    }
-                    
+                    Verb arg_45_0 = combatToil.actor.jobs.curJob.verbToUse;
                     LocalTargetInfo target = combatToil.actor.jobs.curJob.GetTarget(TargetIndex.A);
                     // bool canFreeIntercept2 = false;
                     arg_45_0.TryStartCastOn(target, false, false);
-                    using (IEnumerator<Hediff> enumerator = this.pawn.health.hediffSet.GetHediffs<Hediff>().GetEnumerator())
-                    {
-                        while (enumerator.MoveNext())
-                        {
-                            Hediff rec = enumerator.Current;
-                            if (rec.def == TorannMagicDefOf.TM_PossessionHD || rec.def == TorannMagicDefOf.TM_DisguiseHD || rec.def == TorannMagicDefOf.TM_DisguiseHD_I || rec.def == TorannMagicDefOf.TM_DisguiseHD_II || rec.def == TorannMagicDefOf.TM_DisguiseHD_III)
-                            {
-                                this.pawn.health.RemoveHediff(rec);
-                            }
-                        }
-                    }
                 };
                 combatToil.tickAction = delegate
                 {
-                    if (Find.TickManager.TicksGame % 12 == 0)
-                    {
-                        TM_MoteMaker.ThrowCastingMote(pawn.DrawPos, pawn.Map, Rand.Range(1.2f, 2f));
-                    }
-                    
                     this.duration--;
                 };
                 combatToil.AddFinishAction(delegate
@@ -136,7 +100,7 @@ namespace TorannMagic
                         bool validTarg = curJob.TryFindShootLineFromTo(pawn.Position, TargetLocA, out shootLine);
                         if (validTarg)
                         {
-                            //yield return Toils_Combat.CastVerb(TargetIndex.A, false);
+                            yield return Toils_Combat.CastVerb(TargetIndex.A, false);
                             //Toil toil2 = new Toil()
                             //{
                             //    initAction = () =>
@@ -150,68 +114,12 @@ namespace TorannMagic
                             //    defaultCompleteMode = ToilCompleteMode.Instant
                             //};
                             //yield return toil2;
-                            this.duration = (int)((curJob.verbProps.warmupTime * 60) * this.pawn.GetStatValue(StatDefOf.AimingDelayFactor, false));
-                            Toil toil = new Toil();
-                            toil.initAction = delegate
+                            Toil toil1 = new Toil()
                             {
-                                arg_45_0 = toil.actor.jobs.curJob.verbToUse;
-                                if (this.pawn.RaceProps.Humanlike)
-                                {
-                                    if (this.pawn.story.traits.HasTrait(TorannMagicDefOf.Faceless))
-                                    {
-                                        CompAbilityUserMight mightComp = this.pawn.GetComp<CompAbilityUserMight>();
-                                        CompAbilityUserMagic magicComp = this.pawn.GetComp<CompAbilityUserMagic>();
-                                        if (mightComp.mimicAbility != null && mightComp.mimicAbility.MainVerb.verbClass == arg_45_0.verbProps.verbClass)
-                                        {
-                                            mightComp.RemovePawnAbility(mightComp.mimicAbility);
-                                        }
-                                        if (magicComp.mimicAbility != null && magicComp.mimicAbility.MainVerb.verbClass == arg_45_0.verbProps.verbClass)
-                                        {
-                                            magicComp.RemovePawnAbility(magicComp.mimicAbility);
-                                        }
-                                    }
-                                }
-                                
-                                LocalTargetInfo target = toil.actor.jobs.curJob.GetTarget(TargetIndex.A);
-                                bool canFreeIntercept2 = false;
-                                arg_45_0.TryStartCastOn(target, false, canFreeIntercept2);
-
-                                using (IEnumerator<Hediff> enumerator = this.pawn.health.hediffSet.GetHediffs<Hediff>().GetEnumerator())
-                                {
-                                    while (enumerator.MoveNext())
-                                    {
-                                        Hediff rec = enumerator.Current;
-                                        if (rec.def == TorannMagicDefOf.TM_PossessionHD || rec.def == TorannMagicDefOf.TM_DisguiseHD || rec.def == TorannMagicDefOf.TM_DisguiseHD_I || rec.def == TorannMagicDefOf.TM_DisguiseHD_II || rec.def == TorannMagicDefOf.TM_DisguiseHD_III)
-                                        {
-                                            this.pawn.health.RemoveHediff(rec);
-                                        }
-                                    }
-                                }
+                                initAction = () => curJob.Ability.PostAbilityAttempt(),
+                                defaultCompleteMode = ToilCompleteMode.Instant
                             };
-                            toil.tickAction = delegate
-                            {
-                                if (Find.TickManager.TicksGame % 12 == 0)
-                                {
-                                    TM_MoteMaker.ThrowCastingMote(pawn.DrawPos, pawn.Map, Rand.Range(1.2f, 2f));
-                                }
-                                this.duration--;
-                            };
-                            toil.AddFinishAction(delegate
-                            {
-                                if (this.duration <= 5)
-                                {
-                                    curJob.Ability.PostAbilityAttempt();
-                                }                               
-                            });
-                            toil.defaultCompleteMode = ToilCompleteMode.FinishedBusy;
-                            yield return toil;
-
-                            //Toil toil1 = new Toil()
-                            //{
-                            //    initAction = () => curJob.Ability.PostAbilityAttempt(),
-                            //    defaultCompleteMode = ToilCompleteMode.Instant
-                            //};
-                            //yield return toil1;
+                            yield return toil1;
                         }
                         else
                         {
